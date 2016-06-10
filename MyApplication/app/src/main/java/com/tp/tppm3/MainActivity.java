@@ -15,6 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private List<Product> productList;
     private RecyclerView mRecyclerView;
     private ProductAdapter adapter;
+    private Firebase tppm3rep;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +37,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Firebase.setAndroidContext(this);
+
+        tppm3rep = new Firebase("https://tppm3.firebaseio.com//");
+        productList= new ArrayList<Product>();
+
+        //teste de inserção no BD
+        tppm3rep.child("Arroz").child("Price").setValue("2.45");
+        tppm3rep.child("Arroz").child("Link").setValue("http://perdendobarriga.com.br/wp-content/uploads/2016/04/arroz_branco.png");
+
+        //teste de leitura do BD
+        readData();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -56,11 +75,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        parseResult();
 
-        adapter = new ProductAdapter(MainActivity.this, productList);
-        mRecyclerView.setAdapter(adapter);
 
+
+    }
+
+    private void readData() {
+
+        tppm3rep.addValueEventListener(new ValueEventListener() {
+
+
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println(snapshot.getValue());  //prints "Do you have data? You'll love Firebase."
+                for (DataSnapshot messageSnapshot: snapshot.getChildren()) {
+
+
+                    String name =  messageSnapshot.getKey();
+                    String price = (String) messageSnapshot.child("Price").getValue();
+                    Product item = new Product(name, Float.parseFloat(price));
+                    item.setName(name);
+                    item.setPrice(Float.parseFloat(price));
+                    productList.add(item);
+                }
+
+                adapter = new ProductAdapter(MainActivity.this, productList);
+                mRecyclerView.setAdapter(adapter);
+
+            }
+            @Override public void onCancelled(FirebaseError error) { }
+        });
 
     }
 
@@ -119,21 +163,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void parseResult() {
-
-        productList= new ArrayList<Product>();
-
-
-        for (int i = 0; i < 25; i++) {
-
-            Product item = new Product(Integer.toString(i), i);
-            item.setName(Integer.toString(i));
-            item.setPrice(i);
-            productList.add(item);
-
-        }
     }
 
 }

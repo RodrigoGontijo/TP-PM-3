@@ -3,9 +3,9 @@ package com.tp.tppm3;
 
 public class Product {
     private String name;
-    private int price;
+    private float price;
 
-    public Product(String name, int price){
+    public Product(String name, float price){
         this.name = name;
         this.price = price;
 
@@ -19,11 +19,11 @@ public class Product {
         this.name = name;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
