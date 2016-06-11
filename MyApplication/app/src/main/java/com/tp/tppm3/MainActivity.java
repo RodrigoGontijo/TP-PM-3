@@ -1,5 +1,6 @@
 package com.tp.tppm3;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -41,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Firebase.setAndroidContext(this);
 
         tppm3rep = new Firebase("https://tppm3.firebaseio.com//");
+
+
+
         productList= new ArrayList<Product>();
 
         //teste de inserção no BD
@@ -49,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //teste de leitura do BD
         readData();
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println(snapshot.getValue());  //prints "Do you have data? You'll love Firebase."
                 for (DataSnapshot messageSnapshot: snapshot.getChildren()) {
-
 
                     String name =  messageSnapshot.getKey();
                     String price = (String) messageSnapshot.child("Price").getValue();
@@ -146,20 +150,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.upload_product) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+            Intent intent = new Intent(this,NewProductActivity.class);
+            startActivity(intent);
 
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
