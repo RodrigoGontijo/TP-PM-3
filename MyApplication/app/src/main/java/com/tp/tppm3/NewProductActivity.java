@@ -28,7 +28,7 @@ public class NewProductActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        firebase = new Firebase("https://tppm3.firebaseio.com//");
+        firebase = SingletonFirebase.getConnection();
 //        firebase.child("Arroz").child("Price").setValue("2.45");
 //        firebase.child("Arroz").child("Link").setValue("http://perdendobarriga.com.br/wp-content/uploads/2016/04/arroz_branco.png");
 

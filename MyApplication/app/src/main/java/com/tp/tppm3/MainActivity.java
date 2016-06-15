@@ -41,13 +41,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Firebase.setAndroidContext(this);
 
-        tppm3rep = new Firebase("https://tppm3.firebaseio.com//");
+        tppm3rep = SingletonFirebase.getConnection() ;
 
 
 
         productList= new ArrayList<Product>();
 
         //teste de inserção no BD
+        tppm3rep.child("Users");
+
         tppm3rep.child("Arroz").child("Price").setValue("2.45");
         tppm3rep.child("Arroz").child("Link").setValue("http://perdendobarriga.com.br/wp-content/uploads/2016/04/arroz_branco.png");
 
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     }
+
 
     private void readData() {
 
