@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Firebase.setAndroidContext(this);
 
         tppm3rep = SingletonFirebase.getConnection() ;
 
@@ -98,12 +97,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 System.out.println(snapshot.getValue());  //prints "Do you have data? You'll love Firebase."
                 for (DataSnapshot messageSnapshot: snapshot.getChildren()) {
 
-                    String name =  messageSnapshot.getKey();
-                    String price = (String) messageSnapshot.child("Price").getValue();
-                    Product item = new Product(name, Float.parseFloat(price));
-                    item.setName(name);
-                    item.setPrice(Float.parseFloat(price));
-                    productList.add(item);
+//                    String name =  messageSnapshot.getKey();
+//                    String price = (String) messageSnapshot.child("Price").getValue();
+//                    Product item = new Product(name, Float.parseFloat(price));
+//                    item.setName(name);
+//                    item.setPrice(Float.parseFloat(price));
+//                    productList.add(item);
                 }
 
                 adapter = new ProductAdapter(MainActivity.this, productList);
