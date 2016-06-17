@@ -1,6 +1,8 @@
 package com.tp.tppm3.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -8,14 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.tp.tppm3.R;
 import com.tp.tppm3.Firebase.SingletonFirebase;
 import org.json.JSONException;
@@ -23,6 +17,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.Random;
+import com.tp.tppm3.User.*;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -32,21 +27,13 @@ public class LoginActivity extends AppCompatActivity {
     private EditText lastName;
     private EditText firstName;
     private Button loginButton;
-    private LoginButton facebookLoginButton;
-    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_login);
-        callbackManager = CallbackManager.Factory.create();
         setViews();
-        facebookCallback();
-        facebookLoginButton.setReadPermissions(Arrays.asList(
-                "public_profile", "email"));
-
         setButtonClickListener();
 
     }
@@ -56,67 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode,
-                resultCode, data);
     }
-
-
-    private void facebookCallback() {
-        facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d("Tag: ", String.valueOf(loginResult.getRecentlyGrantedPermissions()));
-                getUserInformation(loginResult);
-
-            }
-
-            @Override
-            public void onCancel() {
-                // App code
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                Log.d("Tag: ", String.valueOf(exception.toString()));
-                // App code
-            }
-        });
-    }
-
-
-
-
-    private void getUserInformation(LoginResult loginResult) {
-        GraphRequest request = GraphRequest.newMeRequest(
-                loginResult.getAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        Log.v("LoginActivity", response.toString());
-
-                        // Application code
-                        try {
-                            String email = object.getString("email");
-                            String id = object.getString("id");
-                            String name = object.getString("name");
-
-                            if (email != null && id !=null && name!=null) {
-                                setUser(email,id, name);
-                                callMain();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email,gender,birthday");
-        request.setParameters(parameters);
-        request.executeAsync();
-    }
-
-
 
 
 
@@ -127,17 +54,23 @@ public class LoginActivity extends AppCompatActivity {
         pass = (EditText) findViewById(R.id.pass);
 
         loginButton = (Button) findViewById(R.id.login_button);
-        facebookLoginButton = (LoginButton) findViewById(R.id.login_button_facebook);
     }
 
     private void setButtonClickListener() {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (email != null && firstName.getText()!=null && lastName.getText()!=null){
-                    getRandomId();
-                    setUser(email.getText().toString(), getRandomId(), firstName.getText().toString().concat(" ").concat(lastName.getText().toString()));
-                    callMain();
+                if (email != null && firstName.getText()!=null && lastName.getText()!=null)
+                {
+                    String mailText = email.getText().toString();
+                    String passText = pass.getText().toString();
+                    String FullName = firstName.getText().toString().concat(" ").concat(lastName.getText().toString());
+                    String id = getRandomId();
+
+                    User newUser = new User(FullName, passText, mailText, id);
+
+                    setUser(mailText, id, FullName);
+                    callMain(newUser);
                 }
             }
         });
@@ -152,7 +85,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void callMain() {
+    private void callMain(User newUser) {
+        // return/add the user somewhere
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
@@ -160,8 +94,15 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void setUser(String email, String id, String name){
-        SingletonFirebase.getConnection().child("Users").child(name).setValue(id);
-        //SingletonFirebase.getConnection().child("Users").child(name).child(email);
+        try{
+            SingletonFirebase.getConnection().child("Users").child(name).child("Id").setValue(id);
+            SingletonFirebase.getConnection().child("Users").child(name).child("Email").setValue(email);
+            SingletonFirebase.getConnection().child("Users").child(name).child("Password").setValue(email);
+        }
+        catch (Exception ex){
+            //Connection to firebase error
+        }
+
     }
 
 }

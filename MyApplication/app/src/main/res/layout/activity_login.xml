@@ -70,14 +70,6 @@
         android:background="@drawable/login_button_shape"
         android:hint="Login"
         android:textSize="14sp" />
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button_facebook"
-        android:layout_width="300dp"
-        android:layout_height="56dp"
-        android:layout_below="@+id/login_button"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp" />
+    
 
 </RelativeLayout>

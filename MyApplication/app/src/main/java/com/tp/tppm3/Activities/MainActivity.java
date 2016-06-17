@@ -27,6 +27,7 @@ import com.tp.tppm3.Product.Product;
 import com.tp.tppm3.Product.ProductAdapter;
 import com.tp.tppm3.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,13 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         productList = new ArrayList<Product>();
         checkLogin();
 
-//        //teste de inserção no BD
-//        tppm3rep.child("Users");
-//
-//        tppm3rep.child("Arroz").child("Price").setValue("2.45");
-//        tppm3rep.child("Arroz").child("Link").setValue("http://perdendobarriga.com.br/wp-content/uploads/2016/04/arroz_branco.png");
-//
-//        //teste de leitura do BD
+
         readData();
 
 
@@ -64,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "New item", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, NewProductActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -97,28 +92,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         editor.putInt("Logged", 1);
         editor.apply();
-
     }
 
 
 
     private void readData() {
 
-        tppm3rep.addValueEventListener(new ValueEventListener() {
+        final Firebase ref = tppm3rep.child("Products");
+        ref.addValueEventListener(new ValueEventListener() {
 
-
+            // ISSO AQUI É MUITO PERIGOSO. SE QUALQUER UMA ATUALIZAR O FIREBASE ISSO AQUI VAI SER CHAMADO.
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());  //prints "Do you have data? You'll love Firebase."
+                productList.clear();
                 for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
 
-//                    String name =  messageSnapshot.getKey();
-//                    String price = (String) messageSnapshot.child("Price").getValue();
-//                    Product item = new Product(name, Float.parseFloat(price));
-//                    item.setName(name);
-//                    item.setPrice(Float.parseFloat(price));
-//                    productList.add(item);
+                    String name =  messageSnapshot.getKey();
+                    Float price  = Float.parseFloat(messageSnapshot.child("Price").getValue().toString());
+
+                    if(messageSnapshot.hasChild("Link") && messageSnapshot.hasChild("id")){
+                        String id  = messageSnapshot.child("id").getValue().toString();
+                        String link  = messageSnapshot.child("Link").getValue().toString();
+                    }
+                    Product item = new Product(name, price);
+                    productList.add(item);
                 }
+
 
                 adapter = new ProductAdapter(MainActivity.this, productList);
                 mRecyclerView.setAdapter(adapter);

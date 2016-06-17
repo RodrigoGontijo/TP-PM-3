@@ -14,6 +14,12 @@ import com.firebase.client.Firebase;
 import com.tp.tppm3.R;
 import com.tp.tppm3.Firebase.SingletonFirebase;
 
+import java.text.DecimalFormat;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
 public class NewProductActivity extends AppCompatActivity {
 
     private EditText name;
@@ -21,6 +27,7 @@ public class NewProductActivity extends AppCompatActivity {
     private EditText url;
     private Button save;
     private Firebase firebase;
+    DecimalFormat df = new DecimalFormat("#.00");
 
 
     @Override
@@ -64,12 +71,32 @@ public class NewProductActivity extends AppCompatActivity {
         save = (Button) findViewById(R.id.save_button);
     }
 
+    private String getRandomId() {
+        Random r = new Random();
+        //generate a 16 digits number
+        long result = r.nextLong();
+        return Long.toString(result);
+
+    }
+
     public void setButtonListener() {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firebase.child(name.getText().toString()).child("Price").setValue(price.getText().toString());
-                firebase.child(name.getText().toString()).child("Link").setValue(url.getText().toString());
+                if(price.getText().length() != 0 && name.getText().length() != 0){
+                    try{
+                        Map<String, String> entry = new HashMap<String, String>();
+                        entry.put("id",getRandomId());
+                        entry.put("Price",(price.getText().toString()));
+                        entry.put("Link", url.getText().toString());
+                        firebase.child("Products").child(name.getText().toString()).setValue(entry);
+                        onBackPressed();
+                    }
+                    catch (Exception ex){
+
+                    }
+                }
+                // Deve avisar erro.
             }
         });
 

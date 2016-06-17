@@ -7,10 +7,16 @@ import java.util.List;
 public class User {
     private List<ProductList> listOfProductLists;
     private String name;
+    private String password;
+    private String email;
+    private String ID;
 
-    public User(String _name){
+    public User(String _name, String _password, String _email, String _id){
         listOfProductLists = new ArrayList<ProductList>();
         this.name = _name;
+        this.password = _password;
+        this.email = _email;
+        this.ID = _id;
     }
 
     public List<ProductList> getListOfProductLists() {
