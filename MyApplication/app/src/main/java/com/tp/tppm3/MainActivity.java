@@ -1,6 +1,8 @@
 package com.tp.tppm3;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -30,29 +32,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView mRecyclerView;
     private ProductAdapter adapter;
     private Firebase tppm3rep;
-
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Firebase.setAndroidContext(this);
         setSupportActionBar(toolbar);
+        tppm3rep = SingletonFirebase.getConnection();
+        productList = new ArrayList<Product>();
+        checkLogin();
 
-
-        tppm3rep = SingletonFirebase.getConnection() ;
-
-
-
-        productList= new ArrayList<Product>();
-
-        //teste de inserção no BD
-        tppm3rep.child("Users");
-
-        tppm3rep.child("Arroz").child("Price").setValue("2.45");
-        tppm3rep.child("Arroz").child("Link").setValue("http://perdendobarriga.com.br/wp-content/uploads/2016/04/arroz_branco.png");
-
-        //teste de leitura do BD
+//        //teste de inserção no BD
+//        tppm3rep.child("Users");
+//
+//        tppm3rep.child("Arroz").child("Price").setValue("2.45");
+//        tppm3rep.child("Arroz").child("Link").setValue("http://perdendobarriga.com.br/wp-content/uploads/2016/04/arroz_branco.png");
+//
+//        //teste de leitura do BD
         readData();
 
 
@@ -75,14 +74,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
-
         // Initialize recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
+    }
 
+    private void checkLogin() {
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if (sharedPreferences.getInt("Logged", 0) == 0) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+        editor.putInt("Logged", 1);
+        editor.apply();
 
     }
 
@@ -95,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println(snapshot.getValue());  //prints "Do you have data? You'll love Firebase."
-                for (DataSnapshot messageSnapshot: snapshot.getChildren()) {
+                for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
 
 //                    String name =  messageSnapshot.getKey();
 //                    String price = (String) messageSnapshot.child("Price").getValue();
@@ -109,7 +116,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 mRecyclerView.setAdapter(adapter);
 
             }
-            @Override public void onCancelled(FirebaseError error) { }
+
+            @Override
+            public void onCancelled(FirebaseError error) {
+            }
         });
 
     }
@@ -154,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.upload_product) {
 
-            Intent intent = new Intent(this,NewProductActivity.class);
+            Intent intent = new Intent(this, NewProductActivity.class);
             startActivity(intent);
 
         }
