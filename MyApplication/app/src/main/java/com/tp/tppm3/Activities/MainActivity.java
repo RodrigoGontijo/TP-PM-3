@@ -24,6 +24,7 @@ import com.tp.tppm3.Product;
 import com.tp.tppm3.ProductAdapter;
 import com.tp.tppm3.ProductList;
 import com.tp.tppm3.R;
+import com.tp.tppm3.SingletonFirebase;
 import com.tp.tppm3.User;
 
 import java.util.ArrayList;
@@ -39,55 +40,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-<<<<<<< HEAD:MyApplication/app/src/main/java/com/tp/tppm3/Activities/MainActivity.java
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-            Firebase.setAndroidContext(this);
-            tppm3rep = new Firebase("https://tppm3.firebaseio.com//");
-            productList = new ArrayList<Product>();
-/*
-        User gabriel = new User("Gabriel", tppm3rep);
-        tppm3rep.setValue(gabriel);*/
-
-       /* ProductList churrasco = new ProductList("Churrasco", gabriel.getRef());
-=======
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
         tppm3rep = SingletonFirebase.getConnection() ;
->>>>>>> master:MyApplication/app/src/main/java/com/tp/tppm3/MainActivity.java
-
-        churrasco.add( new Product("Alcatra", (float)22.45, churrasco.getRef()) );
-        churrasco.add( new Product("Picanha", (float)32.45,churrasco.getRef()) );
-        churrasco.add(new Product("Linguica", (float)22.45,churrasco.getRef()));
-        churrasco.add(new Product("Carvao", (float)8.99,churrasco.getRef()));
-        churrasco.add(new Product("Alcool", (float)5.19,churrasco.getRef()));
-
-        gabriel.addList(churrasco);*/
-
 
         //teste de inserção no BD
-<<<<<<< HEAD:MyApplication/app/src/main/java/com/tp/tppm3/Activities/MainActivity.java
-=======
         tppm3rep.child("Users");
-
         tppm3rep.child("Arroz").child("Price").setValue("2.45");
         tppm3rep.child("Arroz").child("Link").setValue("http://perdendobarriga.com.br/wp-content/uploads/2016/04/arroz_branco.png");
->>>>>>> master:MyApplication/app/src/main/java/com/tp/tppm3/MainActivity.java
-
-        //tppm3rep.child(userName).child(productListName).child(Product).child()
-            tppm3rep.child("Lista1").child("Leite").child("Price").setValue("3.39");
-            tppm3rep.child("Lista1").child("Leite").child("Imagem").setValue("http://www.portalacteo.com.br/wp-content/uploads/2015/01/caixa-de-leite-tetra-pak-300x300.jpg");
 
             //teste de leitura do BD
             readData();
-
 
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
@@ -116,37 +81,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     }
-
-<<<<<<< HEAD:MyApplication/app/src/main/java/com/tp/tppm3/Activities/MainActivity.java
-=======
-
-    private void readData() {
-
-        tppm3rep.addValueEventListener(new ValueEventListener() {
-
-
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());  //prints "Do you have data? You'll love Firebase."
-                for (DataSnapshot messageSnapshot: snapshot.getChildren()) {
-
-//                    String name =  messageSnapshot.getKey();
-//                    String price = (String) messageSnapshot.child("Price").getValue();
-//                    Product item = new Product(name, Float.parseFloat(price));
-//                    item.setName(name);
-//                    item.setPrice(Float.parseFloat(price));
-//                    productList.add(item);
-                }
-
-                adapter = new ProductAdapter(MainActivity.this, productList);
-                mRecyclerView.setAdapter(adapter);
-
-            }
-            @Override public void onCancelled(FirebaseError error) { }
-        });
-
-    }
->>>>>>> master:MyApplication/app/src/main/java/com/tp/tppm3/MainActivity.java
 
     @Override
     public void onBackPressed() {
@@ -195,10 +129,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public Firebase getTppm3rep(){
-        return tppm3rep;
     }
 
     private void readData() {

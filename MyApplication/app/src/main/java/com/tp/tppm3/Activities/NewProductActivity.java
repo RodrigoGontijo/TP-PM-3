@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import com.firebase.client.Firebase;
 import com.tp.tppm3.R;
+import com.tp.tppm3.SingletonFirebase;
 
 public class NewProductActivity extends AppCompatActivity {
 
@@ -29,15 +30,11 @@ public class NewProductActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-<<<<<<< HEAD:MyApplication/app/src/main/java/com/tp/tppm3/Activities/NewProductActivity.java
-        firebase = new Firebase("https://tppm3.firebaseio.com//");
-        firebase.child("Arroz").child("Price").setValue("2.45");
-        firebase.child("Arroz").child("Link").setValue("http://perdendobarriga.com.br/wp-content/uploads/2016/04/arroz_branco.png");
-=======
+
         firebase = SingletonFirebase.getConnection();
 //        firebase.child("Arroz").child("Price").setValue("2.45");
 //        firebase.child("Arroz").child("Link").setValue("http://perdendobarriga.com.br/wp-content/uploads/2016/04/arroz_branco.png");
->>>>>>> master:MyApplication/app/src/main/java/com/tp/tppm3/NewProductActivity.java
+
 
         setViews();
         setButtonListener();
