@@ -1,4 +1,4 @@
-package com.tp.tppm3;
+package com.tp.tppm3.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.firebase.client.Firebase;
+import com.tp.tppm3.R;
+import com.tp.tppm3.Firebase.SingletonFirebase;
 
 public class NewProductActivity extends AppCompatActivity {
 
@@ -30,9 +32,11 @@ public class NewProductActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+
         firebase = SingletonFirebase.getConnection();
 //        firebase.child("Arroz").child("Price").setValue("2.45");
 //        firebase.child("Arroz").child("Link").setValue("http://perdendobarriga.com.br/wp-content/uploads/2016/04/arroz_branco.png");
+
 
         setViews();
         setButtonListener();

@@ -1,13 +1,14 @@
-package com.tp.tppm3;
+package com.tp.tppm3.Product;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+
+import com.tp.tppm3.R;
 
 import java.util.List;
 
