@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+<<<<<<< HEAD:MyApplication/app/src/main/java/com/tp/tppm3/Activities/MainActivity.java
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -52,6 +53,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tppm3rep.setValue(gabriel);*/
 
        /* ProductList churrasco = new ProductList("Churrasco", gabriel.getRef());
+=======
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+        tppm3rep = SingletonFirebase.getConnection() ;
+>>>>>>> master:MyApplication/app/src/main/java/com/tp/tppm3/MainActivity.java
 
         churrasco.add( new Product("Alcatra", (float)22.45, churrasco.getRef()) );
         churrasco.add( new Product("Picanha", (float)32.45,churrasco.getRef()) );
@@ -63,6 +73,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         //teste de inserção no BD
+<<<<<<< HEAD:MyApplication/app/src/main/java/com/tp/tppm3/Activities/MainActivity.java
+=======
+        tppm3rep.child("Users");
+
+        tppm3rep.child("Arroz").child("Price").setValue("2.45");
+        tppm3rep.child("Arroz").child("Link").setValue("http://perdendobarriga.com.br/wp-content/uploads/2016/04/arroz_branco.png");
+>>>>>>> master:MyApplication/app/src/main/java/com/tp/tppm3/MainActivity.java
 
         //tppm3rep.child(userName).child(productListName).child(Product).child()
             tppm3rep.child("Lista1").child("Leite").child("Price").setValue("3.39");
@@ -100,6 +117,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+<<<<<<< HEAD:MyApplication/app/src/main/java/com/tp/tppm3/Activities/MainActivity.java
+=======
+
+    private void readData() {
+
+        tppm3rep.addValueEventListener(new ValueEventListener() {
+
+
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println(snapshot.getValue());  //prints "Do you have data? You'll love Firebase."
+                for (DataSnapshot messageSnapshot: snapshot.getChildren()) {
+
+//                    String name =  messageSnapshot.getKey();
+//                    String price = (String) messageSnapshot.child("Price").getValue();
+//                    Product item = new Product(name, Float.parseFloat(price));
+//                    item.setName(name);
+//                    item.setPrice(Float.parseFloat(price));
+//                    productList.add(item);
+                }
+
+                adapter = new ProductAdapter(MainActivity.this, productList);
+                mRecyclerView.setAdapter(adapter);
+
+            }
+            @Override public void onCancelled(FirebaseError error) { }
+        });
+
+    }
+>>>>>>> master:MyApplication/app/src/main/java/com/tp/tppm3/MainActivity.java
 
     @Override
     public void onBackPressed() {
