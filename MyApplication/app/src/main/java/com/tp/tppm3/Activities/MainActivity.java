@@ -1,4 +1,4 @@
-package com.tp.tppm3;
+package com.tp.tppm3.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +20,10 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.tp.tppm3.Product.Product;
+import com.tp.tppm3.Product.ProductAdapter;
 import com.tp.tppm3.R;
+import com.tp.tppm3.Firebase.SingletonFirebase;
 
 import java.util.List;
 

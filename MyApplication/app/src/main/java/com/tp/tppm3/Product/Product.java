@@ -1,4 +1,4 @@
-package com.tp.tppm3;
+package com.tp.tppm3.Product;
 
 
 import com.firebase.client.Firebase;

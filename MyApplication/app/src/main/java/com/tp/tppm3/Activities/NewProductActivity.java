@@ -1,4 +1,4 @@
-package com.tp.tppm3;
+package com.tp.tppm3.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,9 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.firebase.client.Firebase;
-import com.tp.tppm3.MainActivity;
 import com.tp.tppm3.R;
-import com.tp.tppm3.SingletonFirebase;
+import com.tp.tppm3.Firebase.SingletonFirebase;
 
 public class NewProductActivity extends AppCompatActivity {
 

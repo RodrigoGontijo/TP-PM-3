@@ -1,4 +1,4 @@
-package com.tp.tppm3;
+package com.tp.tppm3.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,8 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.firebase.client.Firebase;
+import com.tp.tppm3.R;
+import com.tp.tppm3.Firebase.SingletonFirebase;
 
 import org.json.JSONException;
 import org.json.JSONObject;

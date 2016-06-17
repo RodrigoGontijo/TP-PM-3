@@ -1,5 +1,5 @@
-package com.tp.tppm3;
-import com.firebase.client.Firebase;
+package com.tp.tppm3.User;
+import com.tp.tppm3.Product.ProductList;
 
 import java.util.ArrayList;
 import java.util.List;
