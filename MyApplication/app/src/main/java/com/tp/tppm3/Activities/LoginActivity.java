@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void callMain(User newUser) {
         // return/add the userID somewhere
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ListsActivity.class);
         startActivity(intent);
 
     }

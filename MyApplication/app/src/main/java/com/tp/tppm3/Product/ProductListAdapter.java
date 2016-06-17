@@ -34,7 +34,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     public void onBindViewHolder(ProductListViewHolder customViewHolder, int i){
         ProductList feedItem = listProductList.get(i);
-        customViewHolder.name.setText("Item name: " + feedItem.getName());
+        customViewHolder.name.setText("Lista: " + feedItem.getName());
     }
 
     @Override

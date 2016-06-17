@@ -166,10 +166,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.upload_product) {
-
-            Intent intent = new Intent(this, NewProductActivity.class);
-            startActivity(intent);
+        switch(id) {
+            case R.id.upload_product: {
+                Intent intent = new Intent(this, NewProductActivity.class);
+                startActivity(intent);
+            }
+            case R.id.upload_list: {
+                Intent intent = new Intent(this, ListsActivity.class);
+                startActivity(intent);
+            }
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
