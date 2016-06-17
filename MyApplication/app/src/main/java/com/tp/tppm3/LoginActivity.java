@@ -17,7 +17,6 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.firebase.client.Firebase;
-import com.tp.tppm3.Activities.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

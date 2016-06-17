@@ -1,4 +1,4 @@
-package com.tp.tppm3.Activities;
+package com.tp.tppm3;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,14 +20,8 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.tp.tppm3.Product;
-import com.tp.tppm3.ProductAdapter;
-import com.tp.tppm3.ProductList;
 import com.tp.tppm3.R;
-import com.tp.tppm3.SingletonFirebase;
-import com.tp.tppm3.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
