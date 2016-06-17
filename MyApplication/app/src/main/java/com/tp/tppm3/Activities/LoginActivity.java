@@ -16,13 +16,8 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-<<<<<<< HEAD:MyApplication/app/src/main/java/com/tp/tppm3/LoginActivity.java
-=======
-import com.firebase.client.Firebase;
 import com.tp.tppm3.R;
 import com.tp.tppm3.Firebase.SingletonFirebase;
->>>>>>> 0f21186e98e24b37bc6e1ef67ac7a28a7264e11a:MyApplication/app/src/main/java/com/tp/tppm3/Activities/LoginActivity.java
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FacebookSdk.sdkInitialize(getBaseContext());
+        FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_login);
         callbackManager = CallbackManager.Factory.create();
         setViews();

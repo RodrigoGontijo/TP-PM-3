@@ -22,11 +22,12 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.tp.tppm3.Firebase.SingletonFirebase;
 import com.tp.tppm3.Product.Product;
 import com.tp.tppm3.Product.ProductAdapter;
 import com.tp.tppm3.R;
-import com.tp.tppm3.Firebase.SingletonFirebase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -39,12 +40,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         Firebase.setAndroidContext(this);
         setSupportActionBar(toolbar);
-<<<<<<< HEAD:MyApplication/app/src/main/java/com/tp/tppm3/MainActivity.java
         tppm3rep = SingletonFirebase.getConnection();
         productList = new ArrayList<Product>();
         checkLogin();
@@ -73,49 +74,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-=======
-        tppm3rep = SingletonFirebase.getConnection() ;
 
-        //teste de inserção no BD
-        tppm3rep.child("Users");
-        tppm3rep.child("Arroz").child("Price").setValue("2.45");
-        tppm3rep.child("Arroz").child("Link").setValue("http://perdendobarriga.com.br/wp-content/uploads/2016/04/arroz_branco.png");
 
-            //teste de leitura do BD
-            readData();
->>>>>>> 0f21186e98e24b37bc6e1ef67ac7a28a7264e11a:MyApplication/app/src/main/java/com/tp/tppm3/Activities/MainActivity.java
-
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "New item", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
-
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.setDrawerListener(toggle);
-            toggle.syncState();
-
-<<<<<<< HEAD:MyApplication/app/src/main/java/com/tp/tppm3/MainActivity.java
         // Initialize recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-=======
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
 
-
-            // Initialize recycler view
-            mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
->>>>>>> 0f21186e98e24b37bc6e1ef67ac7a28a7264e11a:MyApplication/app/src/main/java/com/tp/tppm3/Activities/MainActivity.java
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
 
     }
+
+
 
     private void checkLogin() {
         sharedPreferences = getPreferences(Context.MODE_PRIVATE);
@@ -129,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-<<<<<<< HEAD:MyApplication/app/src/main/java/com/tp/tppm3/MainActivity.java
+
 
     private void readData() {
 
@@ -161,16 +132,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-=======
->>>>>>> 0f21186e98e24b37bc6e1ef67ac7a28a7264e11a:MyApplication/app/src/main/java/com/tp/tppm3/Activities/MainActivity.java
     @Override
+
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override
@@ -212,28 +176,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void readData() {
-        tppm3rep.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());  //prints "Do you have data? You'll love Firebase."
-                for (DataSnapshot messageSnapshot: snapshot.getChildren()) {
-                    String name =  messageSnapshot.getKey();
-                    String price = (String) messageSnapshot.child("Price").getValue();
-                    Product item = new Product(name, Float.parseFloat(price));
-                    item.setName(name);
-                    item.setPrice(Float.parseFloat(price));
-                    productList.add(item);
-                }
-
-                adapter = new ProductAdapter(MainActivity.this, productList);
-                mRecyclerView.setAdapter(adapter);
-
-            }
-            @Override public void onCancelled(FirebaseError error) { }
-        });
-
-    }
 
 
 }
