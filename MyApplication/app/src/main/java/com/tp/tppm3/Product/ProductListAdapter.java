@@ -1,4 +1,4 @@
-/*package com.tp.tppm3;
+package com.tp.tppm3.Product;
 
 
 import android.content.Context;
@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.tp.tppm3.Product.ProductList;
+import com.tp.tppm3.R;
 
 import java.util.List;
 
@@ -20,15 +23,15 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         this.mContext = context;
     }
 
-    @override
+
     public ProductListViewHolder onCreateViewHolder(ViewGroup viewGroup, int i){
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.productList_item, null);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.product_item, null);
         ProductListViewHolder viewHolder = new ProductListViewHolder(view);
 
         return viewHolder;
     }
 
-    @override
+
     public void onBindViewHolder(ProductListViewHolder customViewHolder, int i){
         ProductList feedItem = listProductList.get(i);
         customViewHolder.name.setText("Item name: " + feedItem.getName());
@@ -50,4 +53,3 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     }
 }
-*/

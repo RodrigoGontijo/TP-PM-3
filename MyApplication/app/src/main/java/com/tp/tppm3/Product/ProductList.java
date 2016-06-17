@@ -4,25 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductList {
-    private List<Product> list;
+    private List<String> productsIds;
     private String name;
-    private int id;
+    private String ownerId;
+    private int publicList;
+    private int count;
 
     public ProductList(String _name){
-        this.list = new ArrayList<Product>();
+        this.productsIds = new ArrayList<String>();
         this.name = _name;
     }
 
-    public void add(Product product){
-        list.add(product);
+    public void add(String idProduct){
+        productsIds.add(idProduct);
 
     }
-    public List<Product> getList() {
-        return list;
+    public List<String> getList() {
+        return productsIds;
     }
 
-    public void setList(List<Product> list) {
-        this.list = list;
+    public void setList(List<String> list) {
+        this.productsIds = list;
     }
 
     public String getName() {
@@ -32,5 +34,17 @@ public class ProductList {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getOwnerId(){ return ownerId; }
+
+    public void setOwnerId(String value){ ownerId=value; }
+
+    public int getCount(){return count;}
+
+    public void setCount(int value){count = value;}
+
+    public int getPublicList(){return publicList;}
+
+    public void setPublicList(int value){publicList = value;}
 
 }
