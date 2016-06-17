@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
+        FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_login);
         callbackManager = CallbackManager.Factory.create();
         setViews();
