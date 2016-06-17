@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
+
+    private static final String SP_NAME = "userDetails";
     private List<ProductList> listOfProductLists;
-    private String name;
+    public String name;
     private String password;
-    private String email;
+    public String email;
     private String ID;
 
     public User(String _name, String _password, String _email, String _id){
@@ -32,13 +34,14 @@ public class User {
         listOfProductLists.add(newList);
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getId(){return ID;}
+
+    public String getPassword(){return password;}
+
 
 
 }

@@ -1,12 +1,10 @@
 package com.tp.tppm3.Activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -25,21 +23,21 @@ import com.firebase.client.ValueEventListener;
 import com.tp.tppm3.Firebase.SingletonFirebase;
 import com.tp.tppm3.Product.Product;
 import com.tp.tppm3.Product.ProductAdapter;
+import com.tp.tppm3.Product.ProductList;
 import com.tp.tppm3.R;
 import com.tp.tppm3.User.User;
+import com.tp.tppm3.User.UserLocalStore;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ProductListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private User loggedUser;
     private List<Product> productList;
     private RecyclerView mRecyclerView;
     private ProductAdapter adapter;
     private Firebase tppm3rep;
-    public SharedPreferences sharedPreferences;
+    UserLocalStore localStore;
 
 
     @Override
@@ -47,11 +45,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        Firebase.setAndroidContext(this);
         setSupportActionBar(toolbar);
+
+        Firebase.setAndroidContext(this);
+        localStore = new UserLocalStore(this);
+
         tppm3rep = SingletonFirebase.getConnection();
         productList = new ArrayList<Product>();
-        checkLogin();
 
 
         readData();
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewProductActivity.class);
+                Intent intent = new Intent(ProductListActivity.this, NewProductActivity.class);
                 startActivity(intent);
             }
         });
@@ -82,20 +82,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     }
-
-
-
-    private void checkLogin() {
-        sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        if (sharedPreferences.getInt("UserId", 0) == 0) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
-        editor.putInt("UserId", 1);
-        editor.apply();
-    }
-
 
 
     private void readData() {
@@ -121,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
 
 
-                adapter = new ProductAdapter(MainActivity.this, productList);
+                adapter = new ProductAdapter(ProductListActivity.this, productList);
                 mRecyclerView.setAdapter(adapter);
 
             }
@@ -166,17 +152,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        switch(id) {
-            case R.id.upload_product: {
-                Intent intent = new Intent(this, NewProductActivity.class);
-                startActivity(intent);
-            }
-            case R.id.upload_list: {
-                Intent intent = new Intent(this, ListsActivity.class);
-                startActivity(intent);
-            }
-
+        if(id == R.id.upload_product) {
+            Intent intent = new Intent(this, ProductListActivity.class);
+            startActivity(intent);
         }
+        else if(id == R.id.upload_list) {
+            Intent intent = new Intent(this, ListsActivity.class);
+            startActivity(intent);
+        }
+        else if(id == R.id.logout ){
+            localStore.clearUserData();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

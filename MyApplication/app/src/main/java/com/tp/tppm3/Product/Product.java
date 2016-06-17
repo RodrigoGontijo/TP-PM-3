@@ -7,6 +7,8 @@ public class Product {
     private String name;
     private float price;
 
+    public Product(){
+    }
 
     public Product(String name, float price){
         this.name = name;

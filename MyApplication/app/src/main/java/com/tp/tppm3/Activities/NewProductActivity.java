@@ -1,7 +1,6 @@
 package com.tp.tppm3.Activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,7 +14,6 @@ import com.tp.tppm3.R;
 import com.tp.tppm3.Firebase.SingletonFirebase;
 
 import java.text.DecimalFormat;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -34,11 +32,6 @@ public class NewProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_product);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
 
         firebase = SingletonFirebase.getConnection();
 
@@ -53,7 +46,7 @@ public class NewProductActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 // app icon in action bar clicked; go home
-                Intent intent = new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, ProductListActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 return true;

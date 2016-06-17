@@ -1,11 +1,9 @@
 package com.tp.tppm3.Activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,24 +20,21 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.tp.tppm3.Firebase.SingletonFirebase;
-import com.tp.tppm3.Product.Product;
-import com.tp.tppm3.Product.ProductAdapter;
 import com.tp.tppm3.Product.ProductList;
 import com.tp.tppm3.Product.ProductListAdapter;
 import com.tp.tppm3.R;
-import com.tp.tppm3.User.User;
+import com.tp.tppm3.User.UserLocalStore;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private User loggedUser;
     private List<ProductList> listProductList;
     private RecyclerView mRecyclerView;
     private ProductListAdapter adapter;
     private Firebase tppm3rep;
-    public SharedPreferences sharedPreferences;
+    UserLocalStore localStore;
 
 
     @Override
@@ -49,15 +44,15 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         Firebase.setAndroidContext(this);
         setSupportActionBar(toolbar);
+        localStore = new UserLocalStore(this);
         tppm3rep = SingletonFirebase.getConnection();
         listProductList = new ArrayList<ProductList>();
-        //checkLogin();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ListsActivity.this, MainActivity.class);
+                Intent intent = new Intent(ListsActivity.this, ProductListActivity.class);
                 startActivity(intent);
             }
         });
@@ -65,7 +60,6 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        //drawer.setDrawerListener(toggle);
         toggle.syncState();
 
 
@@ -76,6 +70,8 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        checkLogin();
         readData();
     }
 
@@ -89,24 +85,25 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
             public void onDataChange(DataSnapshot snapshot) {
                 listProductList.clear();
                 for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
+                    if( messageSnapshot.child("Public").getValue() == true || messageSnapshot.child("OwnerId").getValue().equals(localStore.getLoggedUser().getId())){
+                        String name = messageSnapshot.getKey();
+                        String ownerId = messageSnapshot.child("OwnerId").getValue().toString();
+                        boolean publicList = (boolean)messageSnapshot.child("Public").getValue();
+                        int count = Integer.parseInt(messageSnapshot.child("count").getValue().toString());
 
-                    String name = messageSnapshot.getKey();
-                    String ownerId = messageSnapshot.child("OwnerId").getValue().toString();
-                    int publicList = Integer.parseInt(messageSnapshot.child("Public").getValue().toString());
-                    int count = Integer.parseInt(messageSnapshot.child("count").getValue().toString());
+                        ProductList lista = new ProductList(name);
 
-                    ProductList lista = new ProductList(name);
+                        for (DataSnapshot ids : snapshot.child("Items").getChildren()) {
+                            lista.add(ids.getValue().toString());
+                        }
 
-                    for (DataSnapshot ids : snapshot.child("Items").getChildren()) {
-                        lista.add(ids.getValue().toString());
+
+                        lista.setOwnerId(ownerId);
+                        lista.setPublicList(publicList);
+                        lista.setCount(count);
+
+                        listProductList.add(lista);
                     }
-
-
-                    lista.setOwnerId(ownerId);
-                    lista.setPublicList(publicList);
-                    lista.setCount(count);
-
-                    listProductList.add(lista);
                 }
 
 
@@ -122,6 +119,15 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
 
     }
 
+    private void checkLogin() {
+
+        if (!localStore.isUserLogged()) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
+
     @Override
 
     public void onBackPressed() {
@@ -136,9 +142,6 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -155,12 +158,20 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.upload_product) {
-
-            Intent intent = new Intent(this, MainActivity.class);
+        if(id == R.id.upload_product) {
+            Intent intent = new Intent(this, ProductListActivity.class);
             startActivity(intent);
-
         }
+        else if(id == R.id.upload_list) {
+            Intent intent = new Intent(this, ListsActivity.class);
+            startActivity(intent);
+        }
+        else if(id == R.id.logout ){
+            localStore.clearUserData();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

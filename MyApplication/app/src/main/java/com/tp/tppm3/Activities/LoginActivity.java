@@ -10,6 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.firebase.*;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.tp.tppm3.R;
 import com.tp.tppm3.Firebase.SingletonFirebase;
 import org.json.JSONException;
@@ -26,14 +31,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText email;
     private EditText pass;
-    private EditText lastName;
-    private EditText firstName;
     private Button loginButton;
+    private Button register;
+    UserLocalStore userLocalStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        userLocalStore = new UserLocalStore(this);
         setContentView(R.layout.activity_login);
         setViews();
         setButtonClickListener();
@@ -50,30 +55,50 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void setViews() {
-        firstName = (EditText) findViewById(R.id.first_name);
-        lastName = (EditText) findViewById(R.id.last_name);
         email = (EditText) findViewById(R.id.email);
         pass = (EditText) findViewById(R.id.pass);
 
         loginButton = (Button) findViewById(R.id.login_button);
+        register = (Button) findViewById(R.id.register_button);
     }
 
     private void setButtonClickListener() {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (email != null && firstName.getText()!=null && lastName.getText()!=null)
-                {
-                    String mailText = email.getText().toString();
-                    String passText = pass.getText().toString();
-                    String FullName = firstName.getText().toString().concat(" ").concat(lastName.getText().toString());
-                    String id = getRandomId();
 
-                    User newUser = new User(FullName, passText, mailText, id);
+                final String mailText = email.getText().toString();
+                final String passText = pass.getText().toString();
+                Firebase ref = SingletonFirebase.getConnection().child("Users");
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
+                            if(messageSnapshot.child("Email").getValue().equals(mailText) && messageSnapshot.child("Password").getValue().equals(passText)){
+                                userLocalStore.setLoggedUser(true);
+                                User user = new User(messageSnapshot.getKey().toString(), passText, mailText, messageSnapshot.child("Id").getValue().toString());
+                                userLocalStore.storeUserData(user);
+                                callMain();
+                                break;
+                            }
 
-                    setUser(mailText, id, FullName, passText);
-                    callMain(newUser);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError error) {
+                    }
+                    });
                 }
+
+
+        });
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -87,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void callMain(User newUser) {
+    private void callMain() {
         // return/add the userID somewhere
         Intent intent = new Intent(this, ListsActivity.class);
         startActivity(intent);

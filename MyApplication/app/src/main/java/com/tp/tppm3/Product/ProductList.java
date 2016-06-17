@@ -7,7 +7,7 @@ public class ProductList {
     private List<String> productsIds;
     private String name;
     private String ownerId;
-    private int publicList;
+    private boolean publicList;
     private int count;
 
     public ProductList(String _name){
@@ -43,8 +43,8 @@ public class ProductList {
 
     public void setCount(int value){count = value;}
 
-    public int getPublicList(){return publicList;}
+    public boolean getPublicList(){return publicList;}
 
-    public void setPublicList(int value){publicList = value;}
+    public void setPublicList(boolean value){publicList = value;}
 
 }
