@@ -26,6 +26,7 @@ import com.tp.tppm3.Firebase.SingletonFirebase;
 import com.tp.tppm3.Product.Product;
 import com.tp.tppm3.Product.ProductAdapter;
 import com.tp.tppm3.R;
+import com.tp.tppm3.User.User;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -33,11 +34,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private User loggedUser;
     private List<Product> productList;
     private RecyclerView mRecyclerView;
     private ProductAdapter adapter;
     private Firebase tppm3rep;
-    private SharedPreferences sharedPreferences;
+    public SharedPreferences sharedPreferences;
 
 
     @Override
@@ -86,11 +88,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void checkLogin() {
         sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        if (sharedPreferences.getInt("Logged", 0) == 0) {
+        if (sharedPreferences.getInt("UserId", 0) == 0) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
-        editor.putInt("Logged", 1);
+        editor.putInt("UserId", 1);
         editor.apply();
     }
 

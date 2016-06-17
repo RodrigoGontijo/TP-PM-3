@@ -16,6 +16,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import com.tp.tppm3.User.*;
 
@@ -69,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     User newUser = new User(FullName, passText, mailText, id);
 
-                    setUser(mailText, id, FullName);
+                    setUser(mailText, id, FullName, passText);
                     callMain(newUser);
                 }
             }
@@ -86,22 +88,22 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void callMain(User newUser) {
-        // return/add the user somewhere
+        // return/add the userID somewhere
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
     }
 
 
-    private void setUser(String email, String id, String name){
-        try{
-            SingletonFirebase.getConnection().child("Users").child(name).child("Id").setValue(id);
-            SingletonFirebase.getConnection().child("Users").child(name).child("Email").setValue(email);
-            SingletonFirebase.getConnection().child("Users").child(name).child("Password").setValue(email);
-        }
-        catch (Exception ex){
-            //Connection to firebase error
-        }
+    private void setUser(String email, String id, String name, String Password){
+
+            Map<String, String> newUser = new HashMap<>();
+            newUser.put("Id", id);
+            newUser.put("Email", email);
+            newUser.put("Password", Password);
+
+            SingletonFirebase.getConnection().child("Users").child(name).setValue(newUser);
+
 
     }
 

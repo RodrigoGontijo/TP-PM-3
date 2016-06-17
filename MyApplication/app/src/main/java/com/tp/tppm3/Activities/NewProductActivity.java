@@ -41,8 +41,6 @@ public class NewProductActivity extends AppCompatActivity {
 
 
         firebase = SingletonFirebase.getConnection();
-//        firebase.child("Arroz").child("Price").setValue("2.45");
-//        firebase.child("Arroz").child("Link").setValue("http://perdendobarriga.com.br/wp-content/uploads/2016/04/arroz_branco.png");
 
 
         setViews();
@@ -85,10 +83,11 @@ public class NewProductActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(price.getText().length() != 0 && name.getText().length() != 0){
                     try{
-                        Map<String, String> entry = new HashMap<String, String>();
+                        Map<String, Object> entry = new HashMap<>();
                         entry.put("id",getRandomId());
-                        entry.put("Price",(price.getText().toString()));
+                        entry.put("Price",(Float.parseFloat(price.getText().toString())));
                         entry.put("Link", url.getText().toString());
+
                         firebase.child("Products").child(name.getText().toString()).setValue(entry);
                         onBackPressed();
                     }
