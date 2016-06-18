@@ -1,9 +1,7 @@
 package com.tp.tppm3.Product;
 
 
-import com.firebase.client.Firebase;
-
-public class Product {
+public class Product  {
     private String name;
     private float price;
 
@@ -30,9 +28,5 @@ public class Product {
     public void setPrice(float price) {
         this.price = price;
     }
-
-
-
-
 
 }

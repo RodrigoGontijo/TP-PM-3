@@ -3,15 +3,14 @@ package com.tp.tppm3.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.firebase.client.Firebase;
-import com.tp.tppm3.R;
 import com.tp.tppm3.Firebase.SingletonFirebase;
+import com.tp.tppm3.R;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -58,7 +57,6 @@ public class NewProductActivity extends AppCompatActivity {
     public void setViews() {
         name = (EditText) findViewById(R.id.product_name);
         price = (EditText) findViewById(R.id.product_price);
-        url = (EditText) findViewById(R.id.product_image_url);
         save = (Button) findViewById(R.id.save_button);
     }
 

@@ -6,10 +6,4 @@
         android:orderInCategory="100"
         android:title="Adicionar novo produto"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_new_list"
-        android:orderInCategory="100"
-        android:title="Adicionar nova lista"
-        app:showAsAction="never" />
-
 </menu>
