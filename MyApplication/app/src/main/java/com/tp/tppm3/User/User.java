@@ -1,5 +1,5 @@
 package com.tp.tppm3.User;
-import com.tp.tppm3.Product.ProductList;
+import com.tp.tppm3.List.ProductList;
 
 import java.util.ArrayList;
 import java.util.List;

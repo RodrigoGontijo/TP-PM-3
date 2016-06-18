@@ -12,4 +12,13 @@
     tools:context="com.tp.tppm3.Activities.ListsActivity"
     tools:showIn="@layout/activity_lists">
 
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_products"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+
 </RelativeLayout>

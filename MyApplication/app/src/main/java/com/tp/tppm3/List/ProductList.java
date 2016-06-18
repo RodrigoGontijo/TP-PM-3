@@ -1,4 +1,4 @@
-package com.tp.tppm3.Product;
+package com.tp.tppm3.List;
 
 import java.util.ArrayList;
 import java.util.List;

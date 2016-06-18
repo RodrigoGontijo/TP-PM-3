@@ -2,7 +2,6 @@ package com.tp.tppm3.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,15 +12,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.tp.tppm3.Firebase.SingletonFirebase;
-import com.tp.tppm3.Product.ProductList;
-import com.tp.tppm3.Product.ProductListAdapter;
+import com.tp.tppm3.List.ProductList;
+import com.tp.tppm3.List.ProductListAdapter;
 import com.tp.tppm3.R;
 import com.tp.tppm3.User.UserLocalStore;
 
@@ -47,15 +45,6 @@ public class ListsActivity extends AppCompatActivity implements NavigationView.O
         localStore = new UserLocalStore(this);
         tppm3rep = SingletonFirebase.getConnection();
         listProductList = new ArrayList<ProductList>();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ListsActivity.this, ProductListActivity.class);
-                startActivity(intent);
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
