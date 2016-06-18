@@ -70,7 +70,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             listInformation = new UserLocalStore(mContext);
             listInformation.setUserId(listInformation.getListId() + 1);
             int listid = listInformation.getListId();
-            SingletonFirebase.getConnection().child("List").child(String.valueOf(listid)).child("Items").child(listProduct.get(getAdapterPosition()).getName())
+            SingletonFirebase.getConnection().child("List").child("Items").child(listProduct.get(getAdapterPosition()).getName())
                     .setValue(listProduct.get(getAdapterPosition()).getName());
         }
     }
