@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import com.tp.tppm3.R;
 
 import java.util.List;
@@ -52,11 +51,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         protected TextView price;
         protected TextView name;
 
+
         public ProductViewHolder(View view) {
             super(view);
+
             this.price = (TextView) view.findViewById(R.id.price);
             this.name = (TextView) view.findViewById(R.id.name);
         }
+
+
+
+
     }
 
 }

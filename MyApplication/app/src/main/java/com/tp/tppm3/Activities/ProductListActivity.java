@@ -44,17 +44,22 @@ public class ProductListActivity extends AppCompatActivity {
         tppm3rep = SingletonFirebase.getConnection();
         productList = new ArrayList<Product>();
 
-        readData();
+        Bundle bundle = getIntent().getExtras();
+        if (getIntent().getStringExtra("List_ID") != null) {
+            getListProducts(bundle.getString("List_ID"));
+        }else{
+            readAllProducts();
+        }
+
+
 
         // Initialize recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_products);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
     }
 
 
-    private void readData() {
+    private void readAllProducts() {
 
         final Firebase ref = tppm3rep.child("Products");
         ref.addValueEventListener(new ValueEventListener() {
@@ -63,6 +68,40 @@ public class ProductListActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 productList.clear();
+                for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
+
+                    String name =  messageSnapshot.getKey();
+                    Float price  = Float.parseFloat(messageSnapshot.child("Price").getValue().toString());
+
+                    if(messageSnapshot.hasChild("Link") && messageSnapshot.hasChild("id")){
+                        String id  = messageSnapshot.child("id").getValue().toString();
+                        String link  = messageSnapshot.child("Link").getValue().toString();
+                    }
+                    Product item = new Product(name, price);
+                    productList.add(item);
+                }
+
+
+                adapter = new ProductAdapter(ProductListActivity.this, productList);
+                mRecyclerView.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError error) {
+            }
+        });
+
+    }
+
+    private void getListProducts(String name) {
+
+        final Firebase ref = tppm3rep.child("Lists");
+        ref.addValueEventListener(new ValueEventListener() {
+
+            // ISSO AQUI É MUITO PERIGOSO. SE QUALQUER UMA ATUALIZAR O FIREBASE ISSO AQUI VAI SER CHAMADO.
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
 
                     String name =  messageSnapshot.getKey();
@@ -107,10 +146,6 @@ public class ProductListActivity extends AppCompatActivity {
         if (id == R.id.action_new_product) {
             Intent intent = new Intent(this, NewProductActivity.class);
             startActivity(intent);
-            return true;
-        }
-        if (id == R.id.action_new_list) {
-
             return true;
         }
 
