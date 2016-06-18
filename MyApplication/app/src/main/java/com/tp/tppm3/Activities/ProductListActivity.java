@@ -94,25 +94,45 @@ public class ProductListActivity extends AppCompatActivity {
 
     }
 
-    private void getListProducts(String name) {
+    private void getListProducts(final String name) {
 
-        final Firebase ref = tppm3rep.child("Lists");
-        ref.addValueEventListener(new ValueEventListener() {
+        final Firebase listRef = tppm3rep;
+        listRef.addValueEventListener(new ValueEventListener() {
 
             // ISSO AQUI É MUITO PERIGOSO. SE QUALQUER UMA ATUALIZAR O FIREBASE ISSO AQUI VAI SER CHAMADO.
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
+                productList.clear();
+                for (DataSnapshot listSnapshot : snapshot.child("Lists").getChildren())
+                {
+                    if(listSnapshot.getKey().equals(name))
+                    {
+                        String listName =  listSnapshot.getKey();
+                        Boolean isPublic = (Boolean) listSnapshot.child("Public").getValue();
+                        ArrayList<String> items = new ArrayList<String>();
+                        for(DataSnapshot productsId : listSnapshot.child("Items").getChildren()){
+                            items.add(productsId.getValue().toString());
+                        }
+                        for (DataSnapshot productsSnapshots : snapshot.child("Products").getChildren())
+                        {
+                            if(!items.isEmpty()){
+                                for(String value : items)
+                                {
+                                    if(productsSnapshots.child("id").getValue().equals(value))
+                                    {
+                                        Float price  = Float.parseFloat(productsSnapshots.child("Price").getValue().toString());
 
-                    String name =  messageSnapshot.getKey();
-                    Float price  = Float.parseFloat(messageSnapshot.child("Price").getValue().toString());
+                                        if(listSnapshot.hasChild("id")){
+                                            String id  = listSnapshot.child("id").getValue().toString();
+                                        }
 
-                    if(messageSnapshot.hasChild("Link") && messageSnapshot.hasChild("id")){
-                        String id  = messageSnapshot.child("id").getValue().toString();
-                        String link  = messageSnapshot.child("Link").getValue().toString();
+                                        Product item = new Product(productsSnapshots.getKey(), price);
+                                        productList.add(item);
+                                    }
+                                }
+                            }
+                        }
                     }
-                    Product item = new Product(name, price);
-                    productList.add(item);
                 }
 
 
